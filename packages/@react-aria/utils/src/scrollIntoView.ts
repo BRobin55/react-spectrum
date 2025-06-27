@@ -64,8 +64,17 @@ export function scrollIntoView(scrollView: HTMLElement, element: HTMLElement): v
     y += offsetY + height - maxY + scrollPaddingBottomNumber;
   }
 
-  scrollView.scrollLeft = x;
-  scrollView.scrollTop = y;
+  if (scrollView.scrollLeft !== x && scrollView.scrollTop !== y) {
+    const originalScrollBehavior = scrollView.style.scrollBehavior;
+    scrollView.style.scrollBehavior = 'auto';
+
+    scrollView.scrollLeft = x;
+    scrollView.scrollTop = y;
+
+    scrollView.style.scrollBehavior = originalScrollBehavior;
+  } else if (scrollView.scrollLeft !== x) {
+    scrollView.scrollLeft = x;
+  } else if (scrollView.scrollTop !== y) {scrollView.scrollTop = y;}
 }
 
 /**
